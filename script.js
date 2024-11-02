@@ -62,7 +62,7 @@ const displayMovieDetails = (movie) => {
                     <p class="text-secondary mb-1">Cast of Movie</p>
                     <p class="text-white">${movie.Actors}</p>
                     <p class="text-white">Imdb ratings is ${movie.imdbRating}</p>
-                    <a type="button" onclick="closeMovieDetails()" class="btn p-0 backtosearch">
+                    <a type="button" onclick="closeMovieDetails()" class="btn p-0 pb-5 backtosearch">
                         <span class="material-icons me-3">arrow_back</span> Back to Search
                     </a>
             </div>
