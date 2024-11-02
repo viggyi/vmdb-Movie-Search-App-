@@ -81,13 +81,15 @@ const displaymovies = (movies) => {
   const movielist = document.getElementById("movielist");
   const loader = document.getElementById("loader");
   const nomovie = document.getElementById("nomovie");
-  loader.style.display = "block"; // Show loader initially
+
+  // Show loader initially
+  loader.style.display = "block";
 
   if (movies.length === 0) {
     loader.style.display = "none";
     nomovie.style.display = "block";
-    swiper.update(); // Update Swiper with no slides
-
+    movielist.innerHTML = ""; // Clear previous movies
+    swiper.update();
     return;
   } else {
     nomovie.style.display = "none";
@@ -95,47 +97,46 @@ const displaymovies = (movies) => {
 
   movielist.innerHTML = ""; // Clear previous movies
   
+  // Add each movie to the slider
   movies.forEach((movie) => {
-    loader.style.display = "block";
     const slide = document.createElement("div");
     slide.classList.add("swiper-slide");
     slide.innerHTML = `
-            <a type="button" data-imdbID="${movie.imdbID}" id="movieLink" class="btn movie-link text-white">
-                <div class="movie-img">
-                    <img src="${
-                      movie.Poster !== "N/A"
-                        ? movie.Poster
-                        : "https://via.placeholder.com/150x225"
-                    }" class="w-100" alt="${movie.Title}">
-                </div>
-                <div class="movie-name mt-3">
-                    <h5 class="text-white fs-6">${movie.Title}</h5>
-                    <p class="mb-0 text-white">(${movie.Year})</p>
-                </div>
-            </a>
-        `;
+      <a type="button" data-imdbID="${movie.imdbID}" class="btn movie-link text-white">
+        <div class="movie-img">
+          <img src="${
+            movie.Poster !== "N/A"
+              ? movie.Poster
+              : "https://via.placeholder.com/150x225"
+          }" class="w-100" alt="${movie.Title}">
+        </div>
+        <div class="movie-name mt-3">
+          <h5 class="text-white fs-6">${movie.Title}</h5>
+          <p class="mb-0 text-white">(${movie.Year})</p>
+        </div>
+      </a>
+    `;
     movielist.appendChild(slide);
   });
 
-
-  const movieElement = document.getElementsByClassName("movie-link");
-  
-  Array.from(movieElement).forEach((element) => {
+  // Attach click events to each movie for fetching details
+  document.querySelectorAll(".movie-link").forEach((element) => {
     element.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const imdbID = e.currentTarget.getAttribute("data-imdbID");
-        const movieDetails = await fetchMovieDetails(imdbID);
-        if (movieDetails) {
-            displayMovieDetails(movieDetails);
-            searchcontain.style.display = "none";
-        }
+      e.preventDefault();
+      const imdbID = e.currentTarget.getAttribute("data-imdbID");
+      const movieDetails = await fetchMovieDetails(imdbID);
+      if (movieDetails) {
+        displayMovieDetails(movieDetails);
+        searchcontain.style.display = "none";
+      }
     });
-});
+  });
 
-swiper.update();
-loader.style.display = "none";
-
+  // Update Swiper and hide loader
+  swiper.update();
+  loader.style.display = "none";
 };
+
 
 // Handle search input event
 const handleSearchInput = async (event) => {
@@ -143,17 +144,17 @@ const handleSearchInput = async (event) => {
   loader.style.display = "block"; // Show loader at the start of search
 
   const query = event.target.value.trim();
-  if (query.length > 2) {
-    // Start searching after 3 characters
+  if (query.length > 2) { 
     const movies = await fetchMovies(query);
-    displaymovies(movies);
+    displaymovies(movies); 
   } else {
-    document.getElementById("movielist").innerHTML = ""; // Clear slides for short queries
+    document.getElementById("movielist").innerHTML = ""; // Clear previous results
     swiper.update();
   }
 
   loader.style.display = "none"; // Hide loader after search completes
 };
+
 
 // Apply debounce to the search function to limit API calls
 document
