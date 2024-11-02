@@ -10,7 +10,7 @@ const debounce = (func, delay) => {
 
 const fetchMovies = async (letter) => {
   const apikey = "92a21f63";
-  const apiUrl = `http://www.omdbapi.com/?s=${letter}&apikey=${apikey}`;
+  const apiUrl = `https://www.omdbapi.com/?s=${letter}&apikey=${apikey}`;
 
   try {
     const response = await fetch(apiUrl);
@@ -31,7 +31,7 @@ const fetchMovies = async (letter) => {
 
 const fetchMovieDetails = async (imdbID) => {
   const apikey = "92a21f63";
-  const apiUrl = `http://www.omdbapi.com/?i=${imdbID}&apikey=${apikey}`;
+  const apiUrl = `https://www.omdbapi.com/?i=${imdbID}&apikey=${apikey}`;
 
   try {
     const response = await fetch(apiUrl);
